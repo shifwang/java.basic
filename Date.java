@@ -49,6 +49,12 @@ public class Date{
 		}
 	    }
 	    LocalDataExchange.write(file,args[2]);
+	    file = LocalDataExchange.findStringByPath(args[3]);
+	    for(int i = 0; i < file.length; i++){
+		String[] tmp = file[i].split(",");
+		file[i] = tmp[6];
+	    }
+	    LocalDataExchange.write(file,args[4]);
 	}catch(IOException e){
 	    e.printStackTrace();
 	    System.out.println("Error happens in basic.Date");
