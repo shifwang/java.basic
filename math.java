@@ -1,4 +1,5 @@
 package basic;
+import basic.sort;
 
 public class math{
     public static int[] seq(int start, int end, int by){
@@ -9,4 +10,10 @@ public class math{
 	}
 	return out;
     }
+    public static double[] Sort(double[] array){
+	sort res = new sort(array);
+	return res.value;
+	//descending
+    }
+    
 }
