@@ -25,7 +25,7 @@ public class Date{
 		    subset[i] = tmp[0];
 		}
 	    }else{
-		for(int i = 1; i < subset.length; i++){
+		for(int i = 1; i < subset.length; i++){//start from 1 to avoid header
 		    String[] tmp = subset[i].split(",");
 		    System.out.println(tmp[0]);
 		    tmp = tmp[0].split("-");
@@ -50,11 +50,16 @@ public class Date{
 	    }
 	    LocalDataExchange.write(file,args[2]);
 	    file = LocalDataExchange.findStringByPath(args[3]);
-	    for(int i = 0; i < file.length; i++){
+	    String[] adjclose = new String[file.length-1];
+	    boolean[] out1 = Intersect(subset,period);
+	    for(int i = 1; i < file.length; i++){//start from 1 to avoid header
 		String[] tmp = file[i].split(",");
-		file[i] = tmp[6];
+		if(out1[i-1]){
+		    adjclose[i-1] = tmp[6];
+		}else{
+		}
 	    }
-	    LocalDataExchange.write(file,args[4]);
+	    LocalDataExchange.write(adjclose,args[4]);
 	}catch(IOException e){
 	    e.printStackTrace();
 	    System.out.println("Error happens in basic.Date");
