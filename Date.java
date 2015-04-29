@@ -17,12 +17,23 @@ public class Date{
 	    startDay.set(Calendar.DATE,startDay.get(Calendar.DATE) + 1);
 	}
 	try{
+	    int type = 2;	    
 	    String[] subset = LocalDataExchange.findStringByPath(args[0]);
-	    for(int i = 0; i < subset.length; i++){
-		String[] tmp = subset[i].split(",");
-		subset[i] = tmp[0];
+	    if(type == 1){
+		for(int i = 0; i < subset.length; i++){
+		    String[] tmp = subset[i].split(",");
+		    subset[i] = tmp[0];
+		}
+	    }else{
+		for(int i = 1; i < subset.length; i++){
+		    String[] tmp = subset[i].split(",");
+		    System.out.println(tmp[0]);
+		    tmp = tmp[0].split("-");
+		    
+		    subset[i-1] = tmp[0]+tmp[1]+tmp[2];
+		}
 	    }
-	    boolean[] out = In(period,subset);
+	    boolean[] out = Intersect(period,subset);
 	    //	    LocalDataExchange.write(out,args[1]);
 	    String[] file = LocalDataExchange.findStringByPath(args[1]);
 	    for(int i = 0; i < file.length; i++){
@@ -43,8 +54,24 @@ public class Date{
 	    System.out.println("Error happens in basic.Date");
 	}
     }
+    public static boolean[] Intersect(String[] A, String[] B){
+	// B \not \subset A and vice versa
+	// B and A is well sorted in the case that their element can be viewed as integers and the integer is ascending.
+	int iter = 0;
+	int a0 = Integer.parseInt(A[0]);
+	while(Integer.parseInt(B[iter]) < a0){
+	    iter++;
+	}
+	String[] sub = new String[B.length - iter];
+	for(int i = 0; i < sub.length; i++){
+	    sub[i] = B[i+iter];
+	}
+	boolean[] out = In(A,sub);
+	return out;
+    }
+	
     public static boolean[] In(String[] A, String[] B){
-	// B \subset A
+	// min B > min A
 	// A and B are well sorted already.
 	//return a list of booleans indicating A's corresponding item is in B.
 	boolean[] out = new boolean[A.length];
