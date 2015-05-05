@@ -50,8 +50,13 @@ public class Date{
 	    }
 	    LocalDataExchange.write(file,args[2]);
 	    file = LocalDataExchange.findStringByPath(args[3]);
-	    String[] adjclose = new String[file.length-1];
 	    boolean[] out1 = Intersect(subset_no_header,period);
+	    int out1_sum = 0;
+	    for(int i = 0; i < out1.length; i++){
+		if(out1[i])
+		    out1_sum++;
+	    }
+	    String[] adjclose = new String[out1_sum];
 	    int iter = 0;
 	    for(int i = 1; i < file.length; i++){//start from 1 to avoid header
 		String[] tmp = file[i].split(",");
