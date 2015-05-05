@@ -66,41 +66,14 @@ public class Date{
 	}
     }
     public static boolean[] Intersect(String[] A, String[] B){
-	// B \not \subset A and vice versa
 	// B and A is well sorted in the case that their element can be viewed as integers and the integer is ascending.
-	int iter = 0;
-	int a0 = Integer.parseInt(A[0]);
-	while(Integer.parseInt(B[iter]) < a0){
-	    iter++;
-	}
-	String[] sub = new String[B.length - iter];
-	for(int i = 0; i < sub.length; i++){
-	    sub[i] = B[i+iter];
-	}
-	boolean[] out = In(A,sub);
-	return out;
-    }
-	
-    public static boolean[] In(String[] A, String[] B){
-	// min B > min A
-	// A and B are well sorted already.
-	//return a list of booleans indicating A's corresponding item is in B.
-	boolean[] out = new boolean[A.length];
-	int index1 = 0;
-	int index2 = 0;
-	while(index1 < A.length & index2 < B.length){
-	    if(A[index1].equals(B[index2])){
-		out[index1] = true;
-		index1 += 1;
-		index2 += 1;
-	    }else{
-		out[index1] = false;
-		index1 += 1;
-	    }
-	}
-	for(int i = index1+1; i < A.length; i++){
-	    out[i] = false;
-	}
+	int[] a = new int[A.length];
+	for(int i = 0; i < A.length; i++)
+	    a[i] = Integer.parseInt(A[i]);
+	int[] b = new int[B.length];
+	for(int i = 0; i < B.length; i++)
+	    b[i] = Integer.parseInt(B[i]);
+	boolean[] out = math.in(a,b);
 	return out;
     }
 }
