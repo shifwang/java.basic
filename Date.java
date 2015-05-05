@@ -19,6 +19,7 @@ public class Date{
 	try{
 	    int type = 2;	    
 	    String[] subset = LocalDataExchange.findStringByPath(args[0]);
+	    String[] subset_no_header = new String[subset.length-1];
 	    if(type == 1){
 		for(int i = 0; i < subset.length; i++){
 		    String[] tmp = subset[i].split(",");
@@ -28,12 +29,11 @@ public class Date{
 		for(int i = 1; i < subset.length; i++){//start from 1 to avoid header
 		    String[] tmp = subset[i].split(",");
 		    System.out.println(tmp[0]);
-		    tmp = tmp[0].split("-");
-		    
-		    subset[i-1] = tmp[0]+tmp[1]+tmp[2];
+		    tmp = tmp[0].split("-");		    
+		    subset_no_header[i-1] = tmp[0]+tmp[1]+tmp[2];
 		}
 	    }
-	    boolean[] out = Intersect(period,subset);
+	    boolean[] out = Intersect(period,subset_no_header);
 	    //	    LocalDataExchange.write(out,args[1]);
 	    String[] file = LocalDataExchange.findStringByPath(args[1]);
 	    for(int i = 0; i < file.length; i++){
@@ -51,11 +51,12 @@ public class Date{
 	    LocalDataExchange.write(file,args[2]);
 	    file = LocalDataExchange.findStringByPath(args[3]);
 	    String[] adjclose = new String[file.length-1];
-	    boolean[] out1 = Intersect(subset,period);
+	    boolean[] out1 = Intersect(subset_no_header,period);
+	    int iter = 0;
 	    for(int i = 1; i < file.length; i++){//start from 1 to avoid header
 		String[] tmp = file[i].split(",");
 		if(out1[i-1]){
-		    adjclose[i-1] = tmp[6];
+		    adjclose[iter++] = tmp[6];
 		}else{
 		}
 	    }
