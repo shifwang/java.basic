@@ -35,23 +35,11 @@ public class Date{
 	    }
 	    boolean[] out = Intersect(period,subset_no_header);
 	    //	    LocalDataExchange.write(out,args[1]);
-	    String[] file = LocalDataExchange.findStringByPath(args[1]);
-	    for(int i = 0; i < file.length; i++){
-		String[] tmp = file[i].split("\\t");
-		file[i] = "";
-		//System.out.println("Processing line: " + i );
-		for(int j = 0; j < tmp.length; j++){
-		    if(out[j]){
-			file[i] += tmp[j];
-			file[i] += " ";
-		    }else{
-		    }
-		}
-	    }
-	    LocalDataExchange.write(file,args[2]);
-	    file = LocalDataExchange.findStringByPath(args[3]);
 	    boolean add_zero = true;
 	    if(add_zero){
+		file = LocalDataExchange.findStringByPath(args[1]);
+		LocalDataExchange.write(file,args[2]);//no change
+		LocalDataExchange.write(file,args[3]);
 		int iter = 1;//START FROM 1 to AVOID HEADER
 		String[] adjclose = new String[out1];
 		for(int i = 0; i < out.length; i++){
@@ -66,6 +54,22 @@ public class Date{
 		}
 		LocalDataExchange.write(adjclose,args[4]);
 	    }else{
+		//extract file
+		String[] file = LocalDataExchange.findStringByPath(args[1]);
+		for(int i = 0; i < file.length; i++){
+		    String[] tmp = file[i].split("\\t");
+		    file[i] = "";
+		    //System.out.println("Processing line: " + i );
+		    for(int j = 0; j < tmp.length; j++){
+			if(out[j]){
+			    file[i] += tmp[j];
+			    file[i] += " ";
+			}else{
+			}
+		    }
+		}
+		LocalDataExchange.write(file,args[2]);
+		file = LocalDataExchange.findStringByPath(args[3]);
 		boolean[] out1 = Intersect(subset_no_header,period);
 		int out1_sum = 0;
 		for(int i = 0; i < out1.length; i++){
