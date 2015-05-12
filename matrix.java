@@ -472,4 +472,11 @@ public class matrix{
 	matrix m = new matrix(tmp,nameOfCols,nameOfRows);
 	return m;
     }
+    public void biggerThan(double thres){
+	for(int i = 0; i < this.numRow; i++){
+	    for(int j = 0; j < this.numCol; j++){
+		this.data[i][j] = this.data[i][j]>thres? 1:0;
+	    }
+	}
+    }
 }

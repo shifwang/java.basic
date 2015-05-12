@@ -3,9 +3,33 @@ package basic;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.Iterator;
+
 public final class FormatTranslater{
     private static final Pattern NEWLINE_PATTERN = Pattern.compile("\\n");
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s+");
+    public static String HashMapToString(HashMap<Integer,LinkedList<Integer>> hashMap){
+	Set<Integer> keySet = hashMap.keySet();
+	String str = "";
+	int key_ind = 1;
+	for(int key : keySet){	    
+	    str += "The " + (key_ind++) + "st key: " + key + ",";
+	    str += "The value is: ";
+	    int num_of_value = 0;
+	    for(int i : hashMap.get(key)){
+		num_of_value++;
+	        str += i;
+		str += " ";
+	    }
+	    str += "\n";
+	    str += "Total num: " + num_of_value;
+	    str += "\n";
+        }
+	return str;		    
+    }
     public static double[][] rowBind(double[] vectorA, double[] vectorB) throws ArrayIndexOutOfBoundsException{
 	double[][] matrix = new double[2][vectorA.length];
 	for( int i = 0; i < vectorA.length; i++){

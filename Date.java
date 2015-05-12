@@ -17,7 +17,7 @@ public class Date{
 	    startDay.set(Calendar.DATE,startDay.get(Calendar.DATE) + 1);
 	}
 	try{
-	    int type = 2;	    
+	    int type = 2;//Different Format
 	    String[] subset = LocalDataExchange.findStringByPath(args[0]);
 	    String[] subset_no_header = new String[subset.length-1];
 	    if(type == 1){
@@ -50,22 +50,39 @@ public class Date{
 	    }
 	    LocalDataExchange.write(file,args[2]);
 	    file = LocalDataExchange.findStringByPath(args[3]);
-	    boolean[] out1 = Intersect(subset_no_header,period);
-	    int out1_sum = 0;
-	    for(int i = 0; i < out1.length; i++){
-		if(out1[i])
-		    out1_sum++;
-	    }
-	    String[] adjclose = new String[out1_sum];
-	    int iter = 0;
-	    for(int i = 1; i < file.length; i++){//start from 1 to avoid header
-		String[] tmp = file[i].split(",");
-		if(out1[i-1]){
-		    adjclose[iter++] = tmp[6];
-		}else{
+	    boolean add_zero = true;
+	    if(add_zero){
+		int iter = 1;//START FROM 1 to AVOID HEADER
+		String[] adjclose = new String[out1];
+		for(int i = 0; i < out.length; i++){
+		    if(out1[i]){
+			String tmp = file[iter++].split(",");
+			adjclose[i] = tmp[6];
+			//IMPORTANT NOTICE:
+			//    HERE WE ASSUME THE START DATE OF FILE is later than 2008-01-01
+		    }else{
+			adjclose[i] = "0";
+		    }
 		}
+		LocalDataExchange.write(adjclose,args[4]);
+	    }else{
+		boolean[] out1 = Intersect(subset_no_header,period);
+		int out1_sum = 0;
+		for(int i = 0; i < out1.length; i++){
+		    if(out1[i])
+			out1_sum++;
+		}
+		String[] adjclose = new String[out1_sum];
+		int iter = 0;
+		for(int i = 1; i < file.length; i++){//start from 1 to avoid header
+		    String[] tmp = file[i].split(",");
+		    if(out1[i-1]){
+			adjclose[iter++] = tmp[6];
+		    }else{
+		    }
+		}
+		LocalDataExchange.write(adjclose,args[4]);
 	    }
-	    LocalDataExchange.write(adjclose,args[4]);
 	}catch(IOException e){
 	    e.printStackTrace();
 	    System.out.println("Error happens in basic.Date");
