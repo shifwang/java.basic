@@ -33,9 +33,15 @@ public class HdfsDataExchange{
     public static String readFile_TEXT(String path) throws IOException, FileNotFoundException{
 	FileSystem hdfs = FileSystem.get(new Configuration());
 	Path file = new Path(path);
-	FSDataInputStream fin = hdfs.open(file);	
-	String output =	fin.readUTF();
+	FSDataInputStream fin = hdfs.open(file);
+	byte[] buffer = new byte[1024*1024*100];//100MB
+	String output = "";
+	int len = 0;
+	while((len = fin.read(buffer)) != -1){
+	    output += new String(buffer,0,len,"UTF-8");
+	}
 	fin.close();
+	hdfs.close();
 	//System.out.println("The output String is: " + output);
 	return output;
     }
@@ -49,12 +55,30 @@ public class HdfsDataExchange{
 	    }
 	    hdfs.createNewFile(file);	    
 	    FSDataOutputStream fout = hdfs.create(file);	    
-	    PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(new File(path)), "UTF-8"));
+	    //    PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(new File(path)), "UTF-8"));
 	    fout.writeUTF(m.toString());
 	    fout.close();
 	    
 	}catch(IOException e){
 	    System.out.println("Error writting to " + path);
 	}
-    }    
+    }
+    public static void AppendStringToFile(String path, String buffer){
+	try{
+	    FileSystem hdfs = FileSystem.get(new Configuration());
+	    Path file = new Path(path);
+	    if(!hdfs.exists(file)){
+		hdfs.createNewFile(file);
+	    }
+	    FSDataOutputStream fout = hdfs.append(file);
+	    PrintWriter pw = new PrintWriter(fout);
+	    pw.append(buffer);
+	    pw.close();
+	    fout.close();
+	    hdfs.close();
+	}catch(IOException e){
+	    System.out.println("Error happens when using AppendStringToFile!");
+	}
+    }
+	
 }

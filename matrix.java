@@ -434,6 +434,44 @@ public class matrix{
 	}
 	return out;
     }
+    public matrix getCols(boolean[] isSelected){
+	if(isSelected.length != this.ncol()){
+	    System.out.println("Error in getCols(boolean[] isSelected)! length not compatible!");
+	    return null;
+	}
+	int m = this.nrow();	
+	int n = 0;
+	for(int i = 0; i < isSelected.length; i++){
+	    if(isSelected[i])
+		n += 1;
+	}
+	matrix out = new matrix(m,n);
+	int iter = 0;
+	for(int i = 0; i < isSelected.length; i++){
+	    if(!isSelected[i]){
+		continue;
+	    }
+	    for(int j = 0; j < m; j++){
+		out.data[j][iter] = this.data[j][i];
+	    }
+	    iter++;
+	}
+	if(this.rownames != null){
+	    out.getRowNames(this.rownames);
+	}
+	if(this.colnames != null){
+	    iter = 0;
+	    out.colnames = new String[out.ncol()];
+	    for(int i = 0; i < isSelected.length; i++){
+		if(!isSelected[i]){
+		    continue;
+		}
+		out.colnames[iter] = this.colnames[i];
+		iter++;
+	    }
+	}
+	return out;
+    }
     public String toString(){
 	String out = "";
 	if(this.colnames != null){

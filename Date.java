@@ -29,7 +29,7 @@ public class Date{
 		for(int i = 1; i < subset.length; i++){//start from 1 to avoid header
 		    String[] tmp = subset[i].split(",");
 		    System.out.println(tmp[0]);
-		    tmp = tmp[0].split("-");		    
+		    tmp = tmp[0].split("-");
 		    subset_no_header[i-1] = tmp[0]+tmp[1]+tmp[2];
 		}
 	    }
@@ -37,19 +37,21 @@ public class Date{
 	    //	    LocalDataExchange.write(out,args[1]);
 	    boolean add_zero = true;
 	    if(add_zero){
-		file = LocalDataExchange.findStringByPath(args[1]);
+		String[] file = LocalDataExchange.findStringByPath(args[1]);
 		LocalDataExchange.write(file,args[2]);//no change
-		LocalDataExchange.write(file,args[3]);
+		file = LocalDataExchange.findStringByPath(args[3]);
 		int iter = 1;//START FROM 1 to AVOID HEADER
-		String[] adjclose = new String[out1];
+		String prev_value = "0";
+		String[] adjclose = new String[out.length];
 		for(int i = 0; i < out.length; i++){
-		    if(out1[i]){
-			String tmp = file[iter++].split(",");
+		    if(out[i]){
+			String[] tmp = file[iter++].split(",");
 			adjclose[i] = tmp[6];
+			prev_value = tmp[6];
 			//IMPORTANT NOTICE:
 			//    HERE WE ASSUME THE START DATE OF FILE is later than 2008-01-01
 		    }else{
-			adjclose[i] = "0";
+			adjclose[i] = prev_value;//NAN --> previous value
 		    }
 		}
 		LocalDataExchange.write(adjclose,args[4]);
