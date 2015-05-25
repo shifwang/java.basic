@@ -358,19 +358,19 @@ public class matrix{
     public void rowdiff(){
 	this.colnames = null;
 	for(int i = 0; i < this.numRow; i++){
+	    this.data[i][0] = 0;
 	    for(int j = 1; j < this.numCol; j++){
-		this.data[i][j-1] = this.data[i][j] - this.data[i][j-1];
+		this.data[i][j] = this.data[i][j] - this.data[i][j-1];
 	    }
-	    this.data[i][this.numCol - 1] = 0;
 	}
     }
     public void coldiff(){
 	this.rownames = null;
 	for(int j = 0; j < this.numCol; j++){
+	    this.data[0][j] = 0;
 	    for(int i = 1; i < this.numRow; i++){
-		this.data[i-1][j] = this.data[i][j] - this.data[i-1][j];
+		this.data[i][j] = this.data[i][j] - this.data[i-1][j];
 	    }
-	    this.data[this.numRow - 1][j] = 0;
 	}
     }
     public void colNormalize(){

@@ -35,6 +35,7 @@ public class LocalDataExchange{
 	String output = new String(data,"UTF-8");
 	//System.out.println("The output String is: " + output);
 	return output;
+
     }
     public static void write(boolean[] str,String path){
 	try{
