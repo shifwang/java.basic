@@ -29,10 +29,13 @@ public class LocalDataExchange{
     public static String readFile_TEXT(String path) throws IOException, FileNotFoundException{
 	File file = new File(path);
 	FileInputStream fis = new FileInputStream(file);
-	byte[] data =  new byte[(int) file.length()];
-	fis.read(data);
+	byte[] buffer = new byte[1024*1024*100];//100MB
+	String output = "";
+	int len = 0;
+	while((len = fis.read(buffer)) != -1){
+	    output += new String(buffer,0,len,"UTF-8");
+	}
 	fis.close();
-	String output = new String(data,"UTF-8");
 	//System.out.println("The output String is: " + output);
 	return output;
 
